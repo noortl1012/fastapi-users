@@ -14,17 +14,19 @@ pipeline {
             }
         }
 
-        stage('Setup Environment') {
-            steps {
-                // Set up the Hatch environment
-                bat 'hatch env create'
-            }
-        }
-
         stage('Install Dependencies with Extras') {
             steps {
                 // Install the dependencies including the extras
                 bat 'hatch run pip install -e .[beanie,oauth,redis,sqlalchemy]'
+            }
+        }
+        
+
+        stage('Setup Test Environment') {
+            steps {
+                // Manually create the test environment
+                bat 'hatch env create test'
+                bat 'hatch run test pip install -e .[beanie,oauth,redis,sqlalchemy]'
             }
         }
 
