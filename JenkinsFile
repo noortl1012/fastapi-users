@@ -7,7 +7,7 @@ pipeline {
                 bat 'dir %JAVA_HOME%\\bin'
             }
         }
-        stage('Install Hatch') {
+         stage('Install Hatch') {
             steps {
                 // Install Hatch if it's not installed
                 bat 'pip install hatch'
@@ -18,6 +18,13 @@ pipeline {
             steps {
                 // Set up the Hatch environment
                 bat 'hatch env create'
+            }
+        }
+
+        stage('Install Dependencies with Extras') {
+            steps {
+                // Install the dependencies including the extras
+                bat 'hatch run pip install -e .[beanie,oauth,redis,sqlalchemy]'
             }
         }
 
