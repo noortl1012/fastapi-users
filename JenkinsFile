@@ -10,21 +10,21 @@ pipeline {
         stage('Install Hatch') {
             steps {
                 // Install Hatch if it's not installed
-                sh 'pip install hatch'
+                bat 'pip install hatch'
             }
         }
 
         stage('Setup Environment') {
             steps {
                 // Set up the Hatch environment
-                sh 'hatch env create'
+                bat 'hatch env create'
             }
         }
 
         stage('Run Unit Tests') {
             steps {
                 // Run unit tests using Hatch and generate JUnit XML reports
-                sh 'hatch run test:test --junit-xml=report.xml'
+                bat 'hatch run test:test --junit-xml=report.xml'
             }
             post {
                 always {
@@ -37,14 +37,14 @@ pipeline {
         stage('Code Linting and Formatting') {
             steps {
                 // Run linting and type checking
-                sh 'hatch run lint'
+                bat 'hatch run lint'
             }
         }
 
         stage('Serve Documentation') {
             steps {
                 // Serve the documentation
-                sh 'hatch run docs &'
+                bat 'hatch run docs &'
             }
         }
         stage('Code Analysis') {
