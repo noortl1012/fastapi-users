@@ -1,0 +1,63 @@
+pipeline {
+    agent any
+    stages {
+        stage('Verify JAVA_HOME') {
+            steps {
+                bat 'echo %JAVA_HOME%'
+                bat 'dir %JAVA_HOME%\\bin'
+            }
+        }
+        stage('Install Hatch') {
+            steps {
+                // Install Hatch if it's not installed
+                sh 'pip install hatch'
+            }
+        }
+
+        stage('Setup Environment') {
+            steps {
+                // Set up the Hatch environment
+                sh 'hatch env create'
+            }
+        }
+
+        stage('Run Unit Tests') {
+            steps {
+                // Run unit tests using Hatch and generate JUnit XML reports
+                sh 'hatch run test:test --junit-xml=report.xml'
+            }
+            post {
+                always {
+                    // Publish JUnit test results
+                    junit 'report.xml'
+                }
+            }
+        }
+
+        stage('Code Linting and Formatting') {
+            steps {
+                // Run linting and type checking
+                sh 'hatch run lint'
+            }
+        }
+
+        stage('Serve Documentation') {
+            steps {
+                // Serve the documentation
+                sh 'hatch run docs &'
+            }
+        }
+        stage('Code Analysis') {
+            steps {
+                dir("${WORKSPACE}") {
+                    script {
+                        def scannerHome = tool name: 'sq1', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                        withSonarQubeEnv('sq1') {
+                            bat "\"${scannerHome}\\bin\\sonar-scanner.bat\" -Dsonar.projectKey=fast-api-sonar -Dsonar.projectName=fast-api-sonar"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
