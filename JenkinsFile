@@ -14,12 +14,12 @@ pipeline {
             }
         }
 
-        // stage('Install Dependencies with Extras') {
-        //     steps {
-        //         // Install the dependencies including the extras
-        //         bat 'hatch run pip install -e .[beanie,oauth,redis,sqlalchemy]'
-        //     }
-        // }
+        stage('Install Dependencies with Extras') {
+            steps {
+                // Install the dependencies including the extras
+                bat 'hatch run pip install -e ".[beanie,oauth,redis,sqlalchemy]"'
+            }
+        }
 
 
         stage('Setup Test Environment') {
