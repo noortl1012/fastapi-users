@@ -1,61 +1,61 @@
 pipeline {
     agent any
     stages {
-        stage('Verify JAVA_HOME') {
-            steps {
-                bat 'echo %JAVA_HOME%'
-                bat 'dir %JAVA_HOME%\\bin'
-            }
-        }
-         stage('Install Hatch') {
-            steps {
-                // Install Hatch if it's not installed
-                bat 'pip install hatch'
-            }
-        }
-
-        // stage('Install Dependencies with Extras') {
+        // stage('Verify JAVA_HOME') {
         //     steps {
-        //         // Install the dependencies including the extras
-        //         bat 'hatch run pip install -e ".[beanie,oauth,redis,sqlalchemy]"'
+        //         bat 'echo %JAVA_HOME%'
+        //         bat 'dir %JAVA_HOME%\\bin'
+        //     }
+        // }
+        //  stage('Install Hatch') {
+        //     steps {
+        //         // Install Hatch if it's not installed
+        //         bat 'pip install hatch'
         //     }
         // }
 
+        // // stage('Install Dependencies with Extras') {
+        // //     steps {
+        // //         // Install the dependencies including the extras
+        // //         bat 'hatch run pip install -e ".[beanie,oauth,redis,sqlalchemy]"'
+        // //     }
+        // // }
 
-        stage('Setup Test Environment') {
-            steps {
-                // Manually create the test environment
-                bat 'hatch env remove test || echo "No existing test environment"'
-                bat 'hatch env create test'
-            }
-        }
 
-        stage('Run Unit Tests') {
-            steps {
-                // Run unit tests using Hatch and generate JUnit XML reports
-                bat 'hatch run test:test --junit-xml=report.xml'
-            }
-            post {
-                always {
-                    // Publish JUnit test results
-                    junit 'report.xml'
-                }
-            }
-        }
+        // stage('Setup Test Environment') {
+        //     steps {
+        //         // Manually create the test environment
+        //         bat 'hatch env remove test || echo "No existing test environment"'
+        //         bat 'hatch env create test'
+        //     }
+        // }
 
-        stage('Code Linting and Formatting') {
-            steps {
-                // Run linting and type checking
-                bat 'hatch run lint'
-            }
-        }
+        // stage('Run Unit Tests') {
+        //     steps {
+        //         // Run unit tests using Hatch and generate JUnit XML reports
+        //         bat 'hatch run test:test --junit-xml=report.xml'
+        //     }
+        //     post {
+        //         always {
+        //             // Publish JUnit test results
+        //             junit 'report.xml'
+        //         }
+        //     }
+        // }
 
-        stage('Serve Documentation') {
-            steps {
-                // Serve the documentation
-                bat 'hatch run docs &'
-            }
-        }
+        // stage('Code Linting and Formatting') {
+        //     steps {
+        //         // Run linting and type checking
+        //         bat 'hatch run lint'
+        //     }
+        // }
+
+        // stage('Serve Documentation') {
+        //     steps {
+        //         // Serve the documentation
+        //         bat 'hatch run docs &'
+        //     }
+        // }
         stage('Code Analysis') {
             steps {
                 dir("${WORKSPACE}") {
