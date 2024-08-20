@@ -49,6 +49,12 @@ path = "fastapi_users/__init__.py"
 
 [tool.hatch.envs.default]
 installer = "uv"
+features = [
+    "sqlalchemy",
+    "beanie",
+    "oauth",
+    "redis",
+]
 dependencies = [
     "pytest",
     "isort",
