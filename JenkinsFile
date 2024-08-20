@@ -31,13 +31,6 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies with Extras') {
-            steps {
-                // Activate the test environment and install the dependencies with extras
-                bat 'hatch run test pip install -e ".[beanie,oauth,redis,sqlalchemy]"'
-            }
-        }
-
         stage('Run Unit Tests') {
             steps {
                 // Run unit tests using Hatch and generate JUnit XML reports
