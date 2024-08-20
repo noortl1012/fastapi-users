@@ -10,7 +10,7 @@ pipeline {
          stage('Install Hatch') {
             steps {
                 // Install Hatch if it's not installed
-                bat 'pip install hatch'
+                bat 'pip install hatch pytest pytest-mock'
             }
         }
 
