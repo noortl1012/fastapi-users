@@ -26,7 +26,8 @@ pipeline {
             steps {
                 // Manually create the test environment
                 bat 'hatch env remove test || echo "No existing test environment"'
-                bat 'hatch env create test --no-install'
+                bat 'hatch env create test'
+                bat 'hatch run test pip install -e ".[beanie,oauth,redis,sqlalchemy]"'
             }
         }
 
