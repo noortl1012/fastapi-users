@@ -55,7 +55,7 @@ pipeline {
         stage('Serve Documentation') {
             steps {
                 // Serve the documentation
-                bat 'hatch run docs &'
+                bat 'start cmd /c hatch run docs'
             }
         }
         stage('Code Analysis') {
