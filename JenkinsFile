@@ -37,12 +37,12 @@ pipeline {
                 bat 'hatch run test:test --junit-xml=report.xml'
                 bat 'dir'
             }
-            post {
-                always {
-                    // Publish JUnit test results
-                    junit 'report.xml'
-                }
-            }
+            // post {
+            //     always {
+            //         // Publish JUnit test results
+            //         junit 'report.xml'
+            //     }
+            // }
         }
 
         stage('Code Linting and Formatting') {
