@@ -35,6 +35,7 @@ pipeline {
             steps {
                 // Run unit tests using Hatch and generate JUnit XML reports
                 bat 'hatch run test:test --junit-xml=report.xml'
+                bat 'dir'
             }
             post {
                 always {
