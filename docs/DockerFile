@@ -1,0 +1,22 @@
+# Use an official Python runtime as a parent image
+FROM python:3.8-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the pyproject.toml and the rest of the application code
+COPY pyproject.toml ./
+COPY . .
+
+# Install dependencies
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir hatch \
+    && hatch env create \
+    && hatch run pip install -e ".[beanie,oauth,redis,sqlalchemy]"
+
+# Create test environment and install test dependencies
+RUN hatch env create test \
+    && hatch run pip install -e ".[beanie,oauth,redis,sqlalchemy]"
+
+# Run the FastAPI app using the 'hatch run docs' command
+CMD ["hatch", "run", "docs"]
